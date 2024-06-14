@@ -1,3 +1,13 @@
 ----- React -----
-[ Component & Props ]
-* 
+[ Components ]
+* Components dalam react adalah sebuah konsep pemecahan elemen menjadi bagian-bagian 
+  kecil yang independent (berdiri sendiri) dengan tujuan membuat element tersebut reusable 
+  (dapat digunaan kembali).
+* Component di react terbagi menjadi 2 yakni Class Component dan Function Component.
+* Yang membedakan keduanya adalah cara penulisan, versioning react, dan tujuan penggunaan.
+* Nama lainnya adalah Statefull Component (Class) dan Stateless Component (Function).
+* Aturan penulisan sebuah component salah satunya adalah menggunakan Pascal Case.
+
+[ Props ]
+* Setiap components, pasti memiliki props.
+* Props adalah sebuah object yang berisi data-data yang dibutuhkan oleh component.
