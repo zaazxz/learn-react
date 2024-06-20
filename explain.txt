@@ -11,3 +11,10 @@
 [ Props ]
 * Setiap components, pasti memiliki props.
 * Props adalah sebuah object yang berisi data-data yang dibutuhkan oleh component.
+
+[ Konsep Atomic Design ]
+* Atomic Design adalah konsep yang dibuat oleh Brad Frost untuk pemecahan component.
+* Atomic Design adalah sebuah metodologi yang terdiri dari 5 tahapan berbeda yang dimana 5 tahapan nya
+  saling terhubung dan bekerjasama untuk membuat hierarki system dalam UI sebuah aplikasi.
+* https://atomicdesign.bradfrost.com/chapter-2/
+* 
