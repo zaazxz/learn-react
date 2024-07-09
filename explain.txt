@@ -17,4 +17,15 @@
 * Atomic Design adalah sebuah metodologi yang terdiri dari 5 tahapan berbeda yang dimana 5 tahapan nya
   saling terhubung dan bekerjasama untuk membuat hierarki system dalam UI sebuah aplikasi.
 * https://atomicdesign.bradfrost.com/chapter-2/
+
+[ State ]
+* State adalah sebuah memori yang dimiliki oleh sebuah component.
+* Sebuah component dapat menyimpan sebuah data yang dapat dimanipulasi. 
+* State pada Statefull Component dan Stateless Component berbeda.
+* Untuk menggunakan state sebaiknya menggunakan statefull component (Class Component).
+* Tetapi stateless component (Function Component) pun bisa menggunakan state dengan bantuan useState().
+
+[ React Hooks ]
+* Pada versi React 16.8.0, hooks di React dibuat untuk memudahkan penulisan komponen.
+* Hooks ini berfungsi agar functional component mampu menggunakan fitur yang sama seperti Class Component.
 * 
