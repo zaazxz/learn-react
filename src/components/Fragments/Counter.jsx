@@ -8,9 +8,29 @@ export class Counter extends Component {
         this.state = {
             count: 0,
         }
+
+        console.log('constructor');
+    }
+
+    componentDidMount() {
+        this.setState({ count: 1 })
+
+        console.log('componentDidMount');
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+
+        console.log('componentDidUpdate');
+
+        if (this.state.count === 10) {
+            this.setState({ count: 0 })
+        }
     }
     
     render() {
+
+        console.log('render');
+
         return (
         <>
             <div className='flex items-center'>
