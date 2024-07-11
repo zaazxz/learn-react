@@ -1,4 +1,4 @@
-import { useState, React } from 'react';
+import { useState, React, useEffect } from 'react';
 import CardProduct from '../components/Fragments/CardProduct';
 import Button from '../components/Elements/Button/Index';
 import Counter from '../components/Fragments/Counter';
@@ -30,12 +30,28 @@ const products = [
 const ProductsPage = () => {
 
     // TODO : Cart
-    const [cart, setCart] = useState([
-        {
-            id: 1,
-            qty: 1,
+    const [cart, setCart] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
+
+    // TODO : Totalling Cart & Save to Local Storage
+    useEffect(() => {
+        setCart(JSON.parse(localStorage.getItem('cart')) || []);
+    }, [])
+
+    useEffect(() => {
+        if(cart.length > 0) {
+
+            const sum = cart.reduce((acc, item) => {
+                const product = products.find((product) => product.id === item.id);
+                return acc + (product.price * item.qty);
+            }, 0)
+    
+            setTotalPrice(sum);
+    
+            localStorage.setItem('cart', JSON.stringify(cart));
+
         }
-    ]);
+    }, [cart])
 
     const data = {
         email: localStorage.getItem('email'),
@@ -101,6 +117,8 @@ const ProductsPage = () => {
                             </tr>
                         </thead>
                         <tbody>
+                            
+                            {/* List Cart */}
                             {cart.map((item) => {
                                 const product = products.find((product) => product.id === item.id);
                                 return (
@@ -112,6 +130,13 @@ const ProductsPage = () => {
                                     </tr>
                                 )
                             })}
+
+                            {/* Total */}
+                            <tr className='font-bold'>
+                                <td colSpan={3}>Total Price</td>
+                                <td>{totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
+                            </tr>
+                            
                         </tbody>
                     </table>
                 </div>
@@ -119,9 +144,11 @@ const ProductsPage = () => {
                 
 
             </div>
-            <div className="mt-5 flex justify-center">
+
+            {/* Counter */}
+            {/* <div className="mt-5 flex justify-center">
                 <Counter />
-            </div>
+            </div> */}
         </>
     )
 }
