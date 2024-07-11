@@ -28,4 +28,16 @@
 [ React Hooks ]
 * Pada versi React 16.8.0, hooks di React dibuat untuk memudahkan penulisan komponen.
 * Hooks ini berfungsi agar functional component mampu menggunakan fitur yang sama seperti Class Component.
-* 
+
+[ Lifecycle ]
+* Mudahnya, Lifecycle dapat diartikan sebagai siklus hidup sebuah komponen dalam sebuah aplikasi.
+* Dalam React, sebuah komponen juga memiliki siklus hidup / tahapan saat dijalankan. 
+* Secara garis besar, tahapan lifecycle pada React terbagi 3, yakni Mounting, Updating, & Unmounting. 
+* Mounting adalah fase dimana sebuah komponen dibuat. 
+* Updating adalah tahapan dimana sebuah komponen diperbarui / berubah.
+* Unmounting adalah tahapan dimana sebuah komponen dihancurkan.
+* Lalu ada 2 buah fase yang dilalui sebuah komponen, yakni render dan commit. 
+* Render Phase adalah sebuah fase dimana komponen tidak dapat diubah. 
+* Commit Phase adalah sebuah tahapan dimana komponen dapat diubah. 
+* Terakhir, ada sebuah fase dimana dapat mengatur ketika komponen sudah siap. 
+* Sebut saja fase tersebut adalah componentDidMount, componentDidUpdate, dan componentWillUnmount. 
