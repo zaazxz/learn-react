@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import InputForm from '../Elements/Input/Index.jsx'
 import Button from '../Elements/Button/Index.jsx'
 
@@ -25,10 +25,16 @@ const FormLogin = () => {
         // console.log('you hit the login button!');
     }
 
+    const emailRef = useRef();
+
+    useEffect(() => {
+        emailRef.current.focus();
+    }, []);
+
     return (
         <form onSubmit={HandleLogin}>
-            <InputForm title="Email" type="email" placeholder="email@example.com" id="email" />
-            <InputForm title="Password" type="password" placeholder="password" id="password" />
+            <InputForm title="Email" type="email" placeholder="email@example.com" id="email" ref={emailRef}/>
+            <InputForm title="Password" type="password" placeholder="password" id="password"/>
             <Button classname="bg-blue-600 w-full" type="submit">Login</Button>
         </form>
     )
