@@ -1,5 +1,6 @@
 import React from 'react'
 import CardProduct from '../components/fragments/CardProduct'
+import Button from '../components/Elements/Button/Index'
 
 const products = [
     {
@@ -18,29 +19,55 @@ const products = [
     }
 ]
 
+// Getting Email from Local Storage
+const email = localStorage.getItem('email')
+
 const ProductPage = () => {
+
+    // Logout Process
+    const handleLogout = () => {
+
+        // Clear Local Storage
+        localStorage.removeItem('email');
+        localStorage.removeItem('password');
+
+        // Redirect
+        window.location.href = '/login'
+
+    }
+
     return (
-        <div className='flex justify-center py-5'>
+        <>
 
-            {/* Products Iteration */}
-            {products.map((product) => (
-                <CardProduct>
+            {/* Header Section */}
+            <div className="flex justify-end h-16 bg-blue-600 text-white items-center px-10">
+                Hello, {email}
+                <Button variant="ml-5 bg-black" onclick={handleLogout}>Logout</Button>
+            </div>
 
-                    {/* Product Image */}
-                    <CardProduct.Header image={product.image} />
+            {/* Products Section */}
+            <div className='flex justify-center py-5'>
 
-                    {/* Description Product */}
-                    <CardProduct.Body title={product.title}>
-                        {product.desc}
-                    </CardProduct.Body>
+                {/* Products Iteration */}
+                {products.map((product) => (
+                    <CardProduct key={product.id}>
 
-                    {/* Price Product */}
-                    <CardProduct.Footer price={product.price} />
+                        {/* Product Image */}
+                        <CardProduct.Header image={product.image} />
 
-                </CardProduct>
-            ))}
+                        {/* Description Product */}
+                        <CardProduct.Body title={product.title}>
+                            {product.desc}
+                        </CardProduct.Body>
 
-        </div>
+                        {/* Price Product */}
+                        <CardProduct.Footer price={product.price} />
+
+                    </CardProduct>
+                ))}
+
+            </div>
+        </>
     )
 }
 
