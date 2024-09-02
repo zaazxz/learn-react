@@ -11,11 +11,7 @@ const FormLogin = () => {
         localStorage.setItem('email', e.target.email.value);
         localStorage.setItem('password', e.target.password.value);
 
-        if (localStorage.getItem('email') === e.target.email.value && localStorage.getItem('password') === e.target.password.value) {
-            window.location.href = '/products'
-        } else {
-            alert('Login Failed')
-        }
+        window.location = '/products';
 
         // Testing Login
         // alert(e.target.email.value + ' ' + e.target.password.value) 
