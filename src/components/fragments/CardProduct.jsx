@@ -6,7 +6,7 @@ const CardProduct = (props) => {
     const { children } = props;
 
     return (
-        <div className="w-full max-w-sm bg-gray-800 border border-gray-700 rounded-lg mx-2 flex flex-col justify-between my-2">
+        <div className="w-full max-w-xs bg-gray-800 border border-gray-700 rounded-lg mx-2 flex flex-col justify-between my-2">
             {children}
         </div>
     )

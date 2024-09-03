@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CardProduct from '../components/fragments/CardProduct'
 import Button from '../components/Elements/Button/Index'
 import Counter from '../components/fragments/Counter'
@@ -32,22 +32,46 @@ const email = localStorage.getItem('email')
 
 const ProductPage = () => {
 
-    // Define Default State
-    const [cart, setCart] = useState([
-        {
-            id: 1,
-            qty: 1,
+    // Creating State
+    const [cart, setCart] = useState([])
+    const [totalPrice, setTotalPrice] = useState(0)
+
+    // Component Did Mount & Component Did Update
+    /* Set Deafult Value */
+    useEffect(() => {
+
+        // Getting Cart from Local Storage
+        setCart(JSON.parse(localStorage.getItem('cart')) || [])
+
+    }, [])
+
+    /* Component Updating */
+    useEffect(() => {
+        if (cart.length > 0) {
+
+            // Updating Process
+            const sum = cart.reduce((acc, item) => {
+                const product = products.find(product => product.id === item.id)
+                return acc + product.price * item.qty
+            }, 0)
+
+            // Set Total Price
+            setTotalPrice(sum)
+
+            // Set Local Storage
+            localStorage.setItem('cart', JSON.stringify(cart))
+
         }
-    ])
+    }, [cart])
 
     // Cart Process
     const handleAddToCart = (id) => {
         if (cart.find(item => item.id === id)) {
             setCart(
-                cart.map(item => item.id === id ? {...item, qty: item.qty + 1} : item)
+                cart.map(item => item.id === id ? { ...item, qty: item.qty + 1 } : item)
             )
         } else {
-            setCart([...cart, {id, qty: 1}])
+            setCart([...cart, { id, qty: 1 }])
         }
     }
 
@@ -122,6 +146,8 @@ const ProductPage = () => {
                             </tr>
                         </thead>
                         <tbody>
+
+                            {/* List Cart Products */}
                             {cart.map((item) => {
                                 const product = products.find(product => product.id === item.id)
                                 return (
@@ -137,6 +163,15 @@ const ProductPage = () => {
                                     </tr>
                                 )
                             })}
+
+                            {/* Total */}
+                            <tr>
+                                <td colSpan={3} className='font-bold'>Total Price</td>
+                                <td className='font-bold'>
+                                    Rp. {(totalPrice).toLocaleString('id-ID', { styles: 'currency', currency: 'IDR' })}
+                                </td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -144,9 +179,9 @@ const ProductPage = () => {
             </div>
 
             {/* Trying State */}
-            <div className='flex w-100 justify-center mb-5'>
+            {/* <div className='flex w-100 justify-center mb-5'>
                 <Counter></Counter>
-            </div>
+            </div> */}
 
         </>
     )
