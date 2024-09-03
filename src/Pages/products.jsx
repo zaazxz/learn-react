@@ -144,9 +144,9 @@ const ProductPage = () => {
             </div>
 
             {/* Trying State */}
-            {/* <div className='flex w-100 justify-center'>
+            <div className='flex w-100 justify-center mb-5'>
                 <Counter></Counter>
-            </div> */}
+            </div>
 
         </>
     )
