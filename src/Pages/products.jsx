@@ -2,39 +2,36 @@ import React, { useEffect, useRef, useState } from 'react'
 import CardProduct from '../components/fragments/CardProduct'
 import Button from '../components/Elements/Button/Index'
 import Counter from '../components/fragments/Counter'
-
-const products = [
-    {
-        id: 1,
-        title: 'Playstation 5',
-        price: 5000000,
-        image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, voluptatum iusto! Hic, nemo labore. Voluptatibus adipisci illum cupiditate nobis, tenetur voluptatum, similique sequi temporibus itaque pariatur magni eveniet eaque hic?"
-    },
-    {
-        id: 2,
-        title: 'Nintendo Switch',
-        price: 3000000,
-        image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, voluptatum iusto! Hic, nemo labore. Voluptatibus adipisci illum cupiditate nobis, tenetur voluptatum, similique sequi temporibus itaque pariatur magni eveniet eaque hic?"
-    },
-    {
-        id: 3,
-        title: 'Xbox Series X',
-        price: 7000000,
-        image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-        desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, voluptatum iusto! Hic, nemo labore. Voluptatibus adipisci illum cupiditate nobis, tenetur voluptatum, similique sequi temporibus itaque pariatur magni eveniet eaque hic?"
-    }
-]
-
-// Getting Email from Local Storage
-const email = localStorage.getItem('email')
+import getProducts from '../service/product.service'
+import { getUsername } from '../service/auth.service'
 
 const ProductPage = () => {
 
     // Creating State
     const [cart, setCart] = useState([])
     const [totalPrice, setTotalPrice] = useState(0)
+    const [products, setProducts] = useState([])
+    const [username, setUsername] = useState('')
+
+    // Consume API
+    useEffect(() => {
+        getProducts((data) => {
+            setProducts(data)
+        })
+    }, [])
+
+    useEffect(() => {
+
+        // Get Token
+        const token = localStorage.getItem('token')
+
+        if (!token) {
+            window.location = '/login'
+        } else {
+            setUsername(getUsername(token))
+        }
+
+    }, [])
 
     // Component Did Mount & Component Did Update
     /* Set Deafult Value */
@@ -47,7 +44,7 @@ const ProductPage = () => {
 
     /* Component Updating */
     useEffect(() => {
-        if (cart.length > 0) {
+        if (products.length > 0 && cart.length > 0) {
 
             // Updating Process
             const sum = cart.reduce((acc, item) => {
@@ -80,8 +77,7 @@ const ProductPage = () => {
     const handleLogout = () => {
 
         // Clear Local Storage
-        localStorage.removeItem('email');
-        localStorage.removeItem('password');
+        localStorage.removeItem('token');
 
         // Redirect
         window.location.href = '/login'
@@ -110,7 +106,7 @@ const ProductPage = () => {
 
             {/* Header Section */}
             <div className="flex justify-end h-16 bg-blue-600 text-white items-center px-10">
-                Hello, {email}
+                Hello, {username}
                 <Button variant="ml-5 bg-black" onclick={handleLogout}>Logout</Button>
             </div>
 
@@ -119,33 +115,34 @@ const ProductPage = () => {
 
                 {/* Products Iteration */}
                 <div className="w-4/6 flex flex-wrap">
-                    {products.map((product) => (
-                        <CardProduct key={product.id}>
+                    {products.length > 0 &&
+                        products.map((product) => (
+                            <CardProduct key={product.id}>
 
-                            {/* Product Image */}
-                            <CardProduct.Header image={product.image} />
+                                {/* Product Image */}
+                                <CardProduct.Header image={product.image} />
 
-                            {/* Description Product */}
-                            <CardProduct.Body title={product.title}>
-                                {product.desc}
-                            </CardProduct.Body>
+                                {/* Description Product */}
+                                <CardProduct.Body title={product.title}>
+                                    {product.description}
+                                </CardProduct.Body>
 
-                            {/* Price Product */}
-                            <CardProduct.Footer
-                                price={product.price}
-                                id={product.id}
-                                handleAddToCart={handleAddToCart}
-                            />
+                                {/* Price Product */}
+                                <CardProduct.Footer
+                                    price={product.price}
+                                    id={product.id}
+                                    handleAddToCart={handleAddToCart}
+                                />
 
-                            {/* Price Product with Ref */}
-                            {/* <CardProduct.Footer
+                                {/* Price Product with Ref */}
+                                {/* <CardProduct.Footer
                                 price={product.price}
                                 id={product.id}
                                 handleAddToCart={handleAddToCartRef}
                             /> */}
 
-                        </CardProduct>
-                    ))}
+                            </CardProduct>
+                        ))}
                 </div>
 
                 {/* Products Pricing and Total */}
@@ -172,21 +169,22 @@ const ProductPage = () => {
                         <tbody>
 
                             {/* List Cart Products */}
-                            {cart.map((item) => {
-                                const product = products.find(product => product.id === item.id)
-                                return (
-                                    <tr key={item.id}>
-                                        <td>{product.title}</td>
-                                        <td>
-                                            Rp. {product.price.toLocaleString('id-ID', { styles: 'currency', currency: 'IDR' })}
-                                        </td>
-                                        <td>{item.qty}</td>
-                                        <td>
-                                            Rp. {(product.price * item.qty).toLocaleString('id-ID', { styles: 'currency', currency: 'IDR' })}
-                                        </td>
-                                    </tr>
-                                )
-                            })}
+                            {products.length > 0 &&
+                                cart.map((item) => {
+                                    const product = products.find(product => product.id === item.id)
+                                    return (
+                                        <tr key={item.id}>
+                                            <td>{product.title}</td>
+                                            <td>
+                                                ${product.price.toLocaleString('en-US', { styles: 'currency', currency: 'USD' })}
+                                            </td>
+                                            <td>{item.qty}</td>
+                                            <td>
+                                                ${(product.price * item.qty).toLocaleString('en-US', { styles: 'currency', currency: 'USD' })}
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
 
                             {/* List Cart Products with ref */}
                             {/* {cartRef.current.map((item) => {
@@ -209,7 +207,7 @@ const ProductPage = () => {
                             <tr ref={totalPriceRef}>
                                 <td colSpan={3} className='font-bold'>Total Price</td>
                                 <td className='font-bold'>
-                                    Rp. {(totalPrice).toLocaleString('id-ID', { styles: 'currency', currency: 'IDR' })}
+                                    ${(totalPrice).toLocaleString('en-US', { styles: 'currency', currency: 'USD' })}
                                 </td>
                             </tr>
 
