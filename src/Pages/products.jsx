@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import CardProduct from '../components/fragments/CardProduct'
 import Button from '../components/Elements/Button/Index'
-import Counter from '../components/fragments/Counter'
-import getProducts from '../service/product.service'
-import { getUsername } from '../service/auth.service'
+import { getProducts } from '../service/product.service'
 import { useLogin } from '../hooks/useLogin'
 
 const ProductPage = () => {
@@ -110,7 +108,7 @@ const ProductPage = () => {
                             <CardProduct key={product.id}>
 
                                 {/* Product Image */}
-                                <CardProduct.Header image={product.image} />
+                                <CardProduct.Header image={product.image} id={product.id}/>
 
                                 {/* Description Product */}
                                 <CardProduct.Body title={product.title}>
