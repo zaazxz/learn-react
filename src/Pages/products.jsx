@@ -4,6 +4,7 @@ import Button from '../components/Elements/Button/Index'
 import Counter from '../components/fragments/Counter'
 import getProducts from '../service/product.service'
 import { getUsername } from '../service/auth.service'
+import { useLogin } from '../hooks/useLogin'
 
 const ProductPage = () => {
 
@@ -11,26 +12,15 @@ const ProductPage = () => {
     const [cart, setCart] = useState([])
     const [totalPrice, setTotalPrice] = useState(0)
     const [products, setProducts] = useState([])
-    const [username, setUsername] = useState('')
+
+    // Custom Hooks
+    const username = useLogin()
 
     // Consume API
     useEffect(() => {
         getProducts((data) => {
             setProducts(data)
         })
-    }, [])
-
-    useEffect(() => {
-
-        // Get Token
-        const token = localStorage.getItem('token')
-
-        if (!token) {
-            window.location = '/login'
-        } else {
-            setUsername(getUsername(token))
-        }
-
     }, [])
 
     // Component Did Mount & Component Did Update
