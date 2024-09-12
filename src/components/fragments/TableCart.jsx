@@ -1,13 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { DarkMode } from '../../context/DarkMode'
+import { useTotalPrice, useTotalPriceDispatch } from '../../context/TotalPrice'
 
 const TableCart = (props) => {
 
     // Destructuring
     const { products } = props
     const cart = useSelector((state) => state.cart.data)
-    const [ totalPrice, setTotalPrice ] = useState(0)
+    const dispatch = useTotalPriceDispatch()
+    const { total } = useTotalPrice()
     const totalPriceRef = useRef(null);
+    const { isDarkMode, setIsDarkMode } = useContext(DarkMode)
 
     useEffect(() => {
         if (products.length > 0 && cart.length > 0) {
@@ -19,7 +23,12 @@ const TableCart = (props) => {
             }, 0)
 
             // Set Total Price
-            setTotalPrice(sum)
+            dispatch({
+                type: "UPDATE",
+                payload: {
+                    total: sum
+                }
+            }) 
 
             // Set Local Storage
             localStorage.setItem('cart', JSON.stringify(cart))
@@ -37,7 +46,7 @@ const TableCart = (props) => {
 
     return (
         <>
-            <table className='text-left table-auto border-separate border-spacing-x-5'>
+            <table className={`text-left table-auto border-separate border-spacing-x-5 ${isDarkMode && 'text-white'}`}>
                 <thead>
                     <tr>
                         <th>Product</th>
@@ -70,7 +79,7 @@ const TableCart = (props) => {
                     <tr ref={totalPriceRef}>
                         <td colSpan={3} className='font-bold'>Total Price</td>
                         <td className='font-bold'>
-                            ${(totalPrice).toLocaleString('en-US', { styles: 'currency', currency: 'USD' })}
+                            ${(total).toLocaleString('en-US', { styles: 'currency', currency: 'USD' })}
                         </td>
                     </tr>
 
